@@ -1,0 +1,7 @@
+# requirements.in
+Flask
+cython
+transformers==2.3.0
+spacy
+#should install sentence-transformers and pytorch by hand
+#python3 -m spacy download en_core_web_sm
