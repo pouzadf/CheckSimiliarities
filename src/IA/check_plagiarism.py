@@ -1,7 +1,7 @@
 import spacy
 from sentence_transformers import SentenceTransformer
-from src.models.sentence import Sentence
-from src.models.similarity import Similarity
+from models.sentence import Sentence
+from models.similarity import Similarity
 import scipy
 
 BIAS = 0.7

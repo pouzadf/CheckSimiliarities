@@ -1,4 +1,4 @@
-from src.IA.check_plagiarism import find_similarities
+from IA.check_plagiarism import find_similarities
 
 
 
@@ -13,5 +13,5 @@ It's the name of a location close to the intersection of the prime meridian and 
     find_similarities(text_1, text_2)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
     test()

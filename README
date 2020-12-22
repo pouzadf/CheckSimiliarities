@@ -1,0 +1,2 @@
+sudo docker build -t my_img_name
+sudo docker run my_img_name
