@@ -1,7 +1,7 @@
 import spacy
 from sentence_transformers import SentenceTransformer
-from sentence import Sentence
-from similarity import Similarity
+from src.models.sentence import Sentence
+from src.models.similarity import Similarity
 import scipy
 
 BIAS = 0.7
@@ -15,7 +15,7 @@ def window_tokenizer(text, window_size=10, strides=4):
     sequences = []
     sentence_tokenizer = spacy.load("en_core_web_sm")
     tok_doc = sentence_tokenizer(text)
-    sentences = [sent.string for sent in tok_doc.sents]
+    sentences = [sent.string for sent in tok_doc.sents]    
     for sent in sentences:
         word_sent = sent.split()
         start = 0
@@ -25,22 +25,24 @@ def window_tokenizer(text, window_size=10, strides=4):
             seq = word_sent[start:end]
             sequences.append(seq)
             start += strides
+            print(start)
             tmp_end = end + strides
             end = tmp_end if tmp_end <= len_sent else end
-    sequences = [ " ".join(seq) for seq in sequences]
+
+    sequences = [ " ".join(seq) for seq in sequences]    
     return build_sentences(sentences, sequences)
 
 
 def build_sentences(sentences, sequences)   :
-    text = " ".join(seq for seq in sentences)     
+    text = " ".join(seq for seq in sentences)         
     sentences = []        
-    for seq in sequences:              
-        try:                          
-            index = text.index(seq)    
-            indexEnd = index + len(seq)              
-            sentences.append(Sentence(seq, index, indexEnd))
-        except:
-            print("error")                      
+    for seq in sequences:     
+            try:
+                index = sequences.index(seq)    
+                indexEnd = index + len(seq)                          
+                sentences.append(Sentence(seq, index, indexEnd))                    
+            except:                                            
+                print("error " + seq)
     return sentences
 
 def get_distances(emb_model, tokenizer, doc1, doc2):
@@ -66,7 +68,7 @@ def find_similarities(text_1, text_2):
     # distances à l'index (i, j): distance entre la sequence i et la sequence j
     # => matrice symetrique 
     sequences, distances = get_distances(model, window_tokenizer, text_1, text_2)
-    similarities = []
+    similarities = []    
     for i, qi in enumerate(sequences[0]):        
         for j, qj in enumerate(sequences[1]):
             distanceNormalized = 1 - distances[i][j]            
