@@ -4,5 +4,4 @@ transformers
 spacy
 pytest 
 sentence-transformers
-#python3 -m spacy download en_core_web_sm
-#run tests with python -m pytest .\tests\
+argparse
