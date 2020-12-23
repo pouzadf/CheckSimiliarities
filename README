@@ -1,2 +1,7 @@
 sudo docker build -t my_img_name
-sudo docker run my_img_name
+
+usage: docker run my_img_name [-h] [-t]
+
+optional arguments:
+  -h, --help   show this help message and exit
+  -t, --tests  Run the testsuite
