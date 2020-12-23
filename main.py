@@ -1,5 +1,6 @@
 from IA.check_plagiarism import find_similarities
-
+import pytest
+import argparse
 
 
 def test():
@@ -13,5 +14,26 @@ It's the name of a location close to the intersection of the prime meridian and 
     find_similarities(text_1, text_2)
 
 
-if __name__ == "__main__":    
-    test()
+
+
+def parse_cmdline_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-t", "--tests", help="Run the testsuite",
+                        action="store_true")    
+    args = parser.parse_args()
+    return args
+
+def process_cmdline_args(args):
+    if(args.tests):
+        pytest.main(["-x", "tests/"])
+        exit()
+    
+
+
+
+if __name__ == "__main__":
+    args = parse_cmdline_args()
+    process_cmdline_args(args)  
+
+
+

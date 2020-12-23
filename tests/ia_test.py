@@ -1,4 +1,4 @@
-from src.IA.check_plagiarism import *
+from IA.check_plagiarism import *
 
 
 def test_answer():
