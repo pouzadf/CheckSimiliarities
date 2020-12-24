@@ -14,12 +14,15 @@ It's the name of a location close to the intersection of the prime meridian and 
     find_similarities(text_1, text_2)
 
 
+def init_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-t", "--tests", help="Run the testsuite",
+                        action="store_true")
+    return parser
 
 
 def parse_cmdline_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-t", "--tests", help="Run the testsuite",
-                        action="store_true")    
+        
     args = parser.parse_args()
     return args
 
@@ -32,8 +35,18 @@ def process_cmdline_args(args):
 
 
 if __name__ == "__main__":
-    args = parse_cmdline_args()
-    process_cmdline_args(args)  
+    parser = init_parser()
+    while True:
+        astr = input('$: ') 
+        try:
+            args = parser.parse_args(astr.split())
+            if('exit' in args):
+                exit()
+            process_cmdline_args()
+        except SystemExit:
+            # trap argparse error message
+            print('error')
+            continue
 
 
 
