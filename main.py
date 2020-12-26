@@ -4,6 +4,7 @@ import argparse
 import sys
 
 
+
 def test():
     text_1 = "Null Island\n\
 \
@@ -18,8 +19,11 @@ It's the name of a location close to the intersection of the prime meridian and 
 def init_parser():
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("-t", "--tests", help="Run the testsuite",
-                        action="store_true")
+                         action="store_true")
     parser.add_argument("-h", "--help",
+                        action="store_true")
+    
+    parser.add_argument("--score",
                         action="store_true")
     return parser
 
@@ -36,11 +40,34 @@ def display_help_message():
     print("")
 
 
+def compute_score(similarities):
+    if(len(similarities) == 0):
+        return 0
+    
+    score = 0
+    for sim in similarities:
+        score += sim.score
+            
+    return round(score // len(similarities), 2)
+
+def display_score(score):
+    print("Similarity score: " + str(score))
+
+
+
+
 def process_cmdline_args(args):
     if(args.help):
         display_help_message()  
     elif(args.tests):
         pytest.main(["-x", "tests/"])
+    else:
+        #get filename1
+        #get filename2
+        #check_similarities
+        #display score if needed
+        pass
+
 
 
 def handle_unknown_arg_provided():
