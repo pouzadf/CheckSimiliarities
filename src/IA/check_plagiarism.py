@@ -57,6 +57,7 @@ def get_distances(emb_model, tokenizer, doc1, doc2):
     distance_matrix = scipy.spatial.distance.cdist(docs_emb[0], docs_emb[1], "cosine")    
     return docs_sentences, distance_matrix
 
+    
 
 
 def find_similarities(text_1, text_2):
