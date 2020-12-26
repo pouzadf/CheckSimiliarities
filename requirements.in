@@ -4,4 +4,3 @@ transformers
 spacy
 pytest 
 sentence-transformers
-argparse
