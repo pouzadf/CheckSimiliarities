@@ -28,16 +28,17 @@ def window_tokenizer(text, window_size=10, strides=4):
             tmp_end = end + strides            
             end = tmp_end if tmp_end <= len_sent else len_sent
     sequences = [ " ".join(seq) for seq in sequences]    
-    return build_sentences(sentences, sequences)
+    return sequences
 
 
-def build_sentences(sentences, sequences)   :
-    text = " ".join(seq for seq in sentences)         
+def build_sentences(text, sequences):       
     sentences = []        
     for seq in sequences:     
             try:
-                index = sequences.index(seq)    
-                indexEnd = index + len(seq)                          
+                words = seq.split()                
+                index = text.index(" ".join(words[:3]))                                
+                lastWords = " ".join(words[len(words) - 3:])
+                indexEnd = text.index(lastWords) + len(lastWords)                                        
                 sentences.append(Sentence(seq, index, indexEnd))                    
             except:                                            
                 print("error " + seq)
@@ -47,7 +48,8 @@ def get_distances(emb_model, tokenizer, doc1, doc2):
     docs_emb = []
     docs_sentences = []
     for text in [doc1, doc2]:        
-        sentences = tokenizer(text)    
+        sequences = tokenizer(text)
+        sentences = build_sentences(text, sequences)
         sentencesContent = [seq.text for seq in sentences]            
         docs_sentences.append(sentences)                                           
         sentences_embeddings = emb_model.encode(sentencesContent)
