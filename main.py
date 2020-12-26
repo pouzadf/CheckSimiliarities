@@ -1,6 +1,7 @@
 from IA.check_plagiarism import find_similarities
 import pytest
 import argparse
+import sys
 
 
 def test():
@@ -15,38 +16,48 @@ It's the name of a location close to the intersection of the prime meridian and 
 
 
 def init_parser():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("-t", "--tests", help="Run the testsuite",
+                        action="store_true")
+    parser.add_argument("-h", "--help",
                         action="store_true")
     return parser
 
+def display_help_message():
+    print("usage: CheckSimilarities [-t] [-h] fname fname2\n")
+    print("compute and display sentence similarities between text files\n")
+    print("positional arguments:")
+    print("fname        path to the first file to compare")
+    print("fname2       path to the second file to compare")
+    print("")
+    print("optional arguments:")
+    print("-h, --help   Show this help message ")
+    print("-t, --tests  Run the testsuite over the progam and exit")
+    print("")
 
-def parse_cmdline_args():
-        
-    args = parser.parse_args()
-    return args
 
 def process_cmdline_args(args):
-    if(args.tests):
+    if(args.help):
+        display_help_message()  
+    elif(args.tests):
         pytest.main(["-x", "tests/"])
-        exit()
-    
+
+
+def handle_unknown_arg_provided():
+    print("Unknown args have been provided", file=sys.stderr)
+    display_help_message()
 
 
 
 if __name__ == "__main__":
-    parser = init_parser()
+    print("")
+    parser = init_parser()    
     while True:
-        astr = input('$: ') 
-        try:
-            args = parser.parse_args(astr.split())
-            if('exit' in args):
-                exit()
-            process_cmdline_args()
-        except SystemExit:
-            # trap argparse error message
-            print('error')
-            continue
-
-
-
+        astr = input('CheckSimilarities ')
+        if('exit' in astr):
+                exit()        
+        ns, unknown_args = parser.parse_known_args(astr.split())        
+        if unknown_args != []:
+            handle_unknown_arg_provided()
+        else:            
+            process_cmdline_args(ns)
