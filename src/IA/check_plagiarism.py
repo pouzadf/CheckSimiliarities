@@ -15,20 +15,18 @@ def window_tokenizer(text, window_size=10, strides=4):
     sequences = []
     sentence_tokenizer = spacy.load("en_core_web_sm")
     tok_doc = sentence_tokenizer(text)
-    sentences = [sent.string for sent in tok_doc.sents]    
+    sentences = [sent.string for sent in tok_doc.sents]
     for sent in sentences:
         word_sent = sent.split()
         start = 0
         end = window_size
         len_sent = len(word_sent)
         while end - start == window_size:
-            seq = word_sent[start:end]
+            seq = word_sent[start:end]            
             sequences.append(seq)
-            start += strides
-            print(start)
-            tmp_end = end + strides
-            end = tmp_end if tmp_end <= len_sent else end
-
+            start += strides            
+            tmp_end = end + strides            
+            end = tmp_end if tmp_end <= len_sent else len_sent
     sequences = [ " ".join(seq) for seq in sequences]    
     return build_sentences(sentences, sequences)
 
@@ -54,9 +52,7 @@ def get_distances(emb_model, tokenizer, doc1, doc2):
         docs_sentences.append(sentences)                                           
         sentences_embeddings = emb_model.encode(sentencesContent)
         docs_emb.append(sentences_embeddings)    
-    distance_matrix = scipy.spatial.distance.cdist(docs_emb[0], docs_emb[1], "cosine")
-    #results = zip(range(len(distances)), distances)
-    #results = sorted(results, key=lambda x: x[1])
+    distance_matrix = scipy.spatial.distance.cdist(docs_emb[0], docs_emb[1], "cosine")    
     return docs_sentences, distance_matrix
 
 
