@@ -23,4 +23,4 @@ COPY main.py /code
 COPY tests/ /code/tests/
 
 # command to run on container start
-ENTRYPOINT [ "python","-u",  "./main.py" ] 
+CMD [ "python","-u",  "./main.py" ]

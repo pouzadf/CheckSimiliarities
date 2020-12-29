@@ -1,4 +1,5 @@
 from IA.check_plagiarism import find_similarities
+from reader.text_extractor import extract_text_from_file
 import pytest
 import argparse
 import sys
@@ -17,12 +18,11 @@ It's the name of a location close to the intersection of the prime meridian and 
 
 
 def init_parser():
-    parser = argparse.ArgumentParser(add_help=False)
+    parser = argparse.ArgumentParser()
     parser.add_argument("-t", "--tests", help="Run the testsuite",
                          action="store_true")
-    parser.add_argument("-h", "--help",
-                        action="store_true")
-    
+    parser.add_argument("filename")
+    parser.add_argument("filename2")
     parser.add_argument("--score",
                         action="store_true")
     return parser
@@ -57,13 +57,10 @@ def display_score(score):
 
 
 def process_cmdline_args(args):
-    if(args.help):
-        display_help_message()  
-    elif(args.tests):
+    if(args.tests):
         pytest.main(["-x", "tests/"])
     else:
-        #get filename1
-        #get filename2
+        print(extract_text_from_file(args.filename))
         #check_similarities
         #display score if needed
         pass
@@ -80,7 +77,7 @@ if __name__ == "__main__":
     print("")
     parser = init_parser()    
     while True:
-        astr = input('CheckSimilarities ')
+        astr = input('main.py ')
         if('exit' in astr):
                 exit()        
         ns, unknown_args = parser.parse_known_args(astr.split())        
