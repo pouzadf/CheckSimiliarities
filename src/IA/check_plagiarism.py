@@ -104,6 +104,9 @@ def add_in_interval(start, end, intervals):
 
 
 def merge_overlapping_intervals(temp_tuple):
+    if(len(temp_tuple) == 0):
+        return temp_tuple
+
     temp_tuple.sort(key=lambda interval: interval[0])
     merged = [temp_tuple[0]]
     for current in temp_tuple:
