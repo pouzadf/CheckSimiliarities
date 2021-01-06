@@ -34,29 +34,22 @@ def testComputeScore_WithNoSimilarities():
     assert compute_score([]) == 0
 
 
-def testComputeScore_WithSimilaritiesScore_EqualsTo1():
-        similarities = []
-        for i in range(10):
-            similarities.append(Similarity(1,create_random_sentence(), create_random_sentence()))
-        assert compute_score(similarities) == 1
+def testComputeScore_WithSimilaritiesScore_EqualsTo1():        
+        assert compute_score([1.0, 1.0, 1.0, 1.0, 1.0]) == 1
 
 
 def testComputeScore_WithRandomSimilaritiesScore():
-        similarities = []
-        score = 0
-        for i in range(10):
-            curr = random.uniform(0,1)
-            score += curr
-            similarities.append(Similarity(curr,create_random_sentence(), create_random_sentence()))
-        assert compute_score(similarities) == round(score // len(   similarities), 2)
+        scores = [0.85, 0.48, 0.78, 0.64, 0.25]
+        res  = 0
+        for s in scores:
+            res += s
+
+        assert compute_score(scores) == round(res / len(scores), 2)
 
 
 
 def testComputeScore_WithSimilaritiesScore_EqualsTo0():
-        similarities = []
-        for i in range(10):
-            similarities.append(Similarity(0,create_random_sentence(), create_random_sentence()))
-        assert compute_score(similarities) == 0
+        assert compute_score([0.0, 0.0, 0.0, 0.0, 0.0]) == 0
 
 def testDisplayScore_WritesRightMsgOnStdout(capsys):
     score = 0.89

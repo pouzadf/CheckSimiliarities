@@ -35,5 +35,37 @@ def testBuildSentence_returnsSentences_WithRightIndex3():
   sentences = build_sentences(text_1, sequences)
   for s in sentences:
     assert s.text == text_1[s.start:s.end]
-        
 
+def testAddInInterval_EmptyList():
+    intervals = []
+    add_in_interval(0,5,intervals)
+    assert( intervals == [[0,5]])
+
+
+def testAddInInterval_NoMergePossible():
+    intervals = [[28,42], [13,19], [5,11], [0,4]]
+    add_in_interval(21,27,intervals)
+    assert( intervals == [[28,42], [13,19], [5,11], [0,4], [21, 27]])
+
+
+def testAddInInterval_StartIndexBefore():
+    intervals = [[28,42], [13,19], [5,11], [0,4]]
+    add_in_interval(21,37,intervals)
+    assert( intervals == [[21,42], [13,19], [5,11], [0,4]])
+
+
+def testAddInInterval_StartIndexBefore_EndAsBound():
+    intervals = [[28,42], [13,19], [5,11], [0,4]]
+    add_in_interval(21,42,intervals)
+    assert( intervals == [[21,42], [13,19], [5,11], [0,4]])
+
+
+def testAddInInterval_EndIndexAfter():
+    intervals = [[28,42], [13,19], [5,11], [0,4]]
+    add_in_interval(21,37,intervals)
+    assert( intervals == [[21,42], [13,19], [5,11], [0,4]])
+
+def testAddInInterval_EndIndexAfter_StartAsBound():
+    intervals = [[28,42], [13,19], [5,11], [0,4]]
+    add_in_interval(13, 25, intervals)
+    assert( intervals == [[28,42], [13,25], [5,11], [0,4]])
