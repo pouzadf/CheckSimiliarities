@@ -21,6 +21,7 @@ RUN python -m spacy download en_core_web_sm
 COPY src/ /code
 COPY main.py /code
 COPY tests/ /code/tests/
+COPY data/ /code/data
 
 # command to run on container start
-CMD [ "python","-u",  "./main.py" ]
+CMD [ "python","-u",  "./main.py" ] 
