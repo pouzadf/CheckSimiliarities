@@ -57,6 +57,8 @@ def display_score(score):
 def process_cmdline_args(args):    
     text = extract_text_from_file(args.filename)
     text2 = extract_text_from_file(args.filename2)
+    if(text == None or text2 == None):
+        return
     
     sims, scores = find_similarities(text, text2)    
     sims_intervals = merge_similarities(sims)
