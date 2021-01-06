@@ -69,3 +69,12 @@ def testAddInInterval_EndIndexAfter_StartAsBound():
     intervals = [[28,42], [13,19], [5,11], [0,4]]
     add_in_interval(13, 25, intervals)
     assert( intervals == [[28,42], [13,25], [5,11], [0,4]])
+
+def testMergeOverlappingInterval():
+    lst = [[28,42], [13,19], [5,11], [0,4]]
+    lst  = [[7,11] , [0,8] , [24,31], [16,28]]
+    lst = merge_overlapping_intervals(lst)
+    assert( lst == [[0,11] , [16,31]])
+
+def testMergeOverlappingInterval_EmptyList():
+    assert ([] == merge_overlapping_intervals([]))
