@@ -40,8 +40,8 @@ def build_sentences(text, sequences):
                 lastWords = " ".join(words[len(words) - 3:])
                 indexEnd = text.index(lastWords) + len(lastWords)                                        
                 sentences.append(Sentence(seq, index, indexEnd))                    
-            except:                                            
-                print("error " + seq)
+            except:
+                pass                                                            
     return sentences
 
 def get_distances(emb_model, tokenizer, doc1, doc2):
@@ -67,12 +67,55 @@ def find_similarities(text_1, text_2):
     # distances à l'index (i, j): distance entre la sequence i et la sequence j
     # => matrice symetrique 
     sequences, distances = get_distances(model, window_tokenizer, text_1, text_2)
-    similarities = []    
+    similarities = []
+    score = []    
     for i, qi in enumerate(sequences[0]):        
         for j, qj in enumerate(sequences[1]):
             distanceNormalized = 1 - distances[i][j]            
-            if(distanceNormalized > BIAS):
-                    similarities.append(Similarity(distanceNormalized, qi, qj))
-    return similarities
+            if(distanceNormalized > BIAS):                    
+                    similarities.append(Similarity(distanceNormalized, qi, qj))    
+            score.append(distanceNormalized)
+    return similarities,score
+
+
+def merge_similarities(sims):
+    sentences_index_t1 = []
+    sentences_index_t2 = []
+    for sim in sims:
+        sentences_index_t1.append([sim.src.start, sim.src.end])
+        sentences_index_t2.append([sim.suspicious.start, sim.suspicious.end])
+
+    sentences_index_t1 =  merge_overlapping_intervals(sentences_index_t1)
+    sentences_index_t2 = merge_overlapping_intervals(sentences_index_t2)
+    return (sentences_index_t1, sentences_index_t2)
+
+
+def add_in_interval(start, end, intervals):
+    for interval in intervals:
+        if(start >= interval[0] and end < interval[1]):
+            return
+        elif(start >= interval[0] and start <= interval[1] and end > interval[1]):
+            interval[1] = end
+            return
+        elif(start < interval[0] and end >= interval[0] and end <= interval[1]):
+            interval[0] = start
+            return        
+    intervals.append([start, end])
+
+
+def merge_overlapping_intervals(temp_tuple):
+    temp_tuple.sort(key=lambda interval: interval[0])
+    merged = [temp_tuple[0]]
+    for current in temp_tuple:
+        previous = merged[-1]
+        if current[0] <= previous[1]:
+            previous[1] = max(previous[1], current[1])
+        else:
+            merged.append(current)
+    return merged
+
+
+
+ 
        
 

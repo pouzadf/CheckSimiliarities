@@ -1,21 +1,8 @@
-from IA.check_plagiarism import find_similarities
+from IA.check_plagiarism import find_similarities, merge_similarities
 from reader.text_extractor import extract_text_from_file
 import pytest
 import argparse
 import sys
-
-
-
-def test():
-    text_1 = "Null Island\n\
-\
-Null Island is a name for the area around the point where the prime meridian and the equator cross, located in international waters in the Gulf of Guinea (Atlantic Ocean) off the west African coast.[1] In the WGS84 datum, this is at zero degrees latitude and longitude (0°N 0°E), and is the location of a buoy. The name 'Null Island' serves as both a joke based around the suppositional existence of an island there, and also as a name to which coordinates erroneously set to 0,0 are assigned in placenames databases in order to more easily find and fix them."
-
-    text_2 = "Presentation of Null Island.\n\
-\
-It's the name of a location close to the intersection of the prime meridian and the equator. It's located in international waters in the Atlantic Ocean of the Gulf of Guinea, off the west African coast. It corresponds to the coordinates (0, 0) in the WGS84 datum. At this locztion ther is a buoy. The name is both a joke and based on the hypothesis existence of an island at this point. As well, it's link to databases placenames to ease finding them."
-    find_similarities(text_1, text_2)
-
 
 def init_parser():
     parser = argparse.ArgumentParser()
@@ -39,42 +26,59 @@ def display_help_message():
     print("-t, --tests  Run the testsuite over the progam and exit")
     print("")
 
+def display_similarities(sims_intervals, text):
+    index = 0
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    for interval in sims_intervals:
+        print(text[index:interval[0]], end="")
+        print(FAIL + text[interval[0]:interval[1]] + ENDC, end="")
+        index = interval[1]
+    if(index != len(text) - 1):
+        print(text[index:len(text)], end="")
+    print()
 
-def compute_score(similarities):
-    if(len(similarities) == 0):
+
+
+def compute_score(scoreList):    
+    result = 0
+    if(len(scoreList) == 0):
         return 0
-    
-    score = 0
-    for sim in similarities:
-        score += sim.score
+
+    for score in scoreList:        
+        result += score
             
-    return round(score // len(similarities), 2)
+    return round(result / len(scoreList), 2)
 
 def display_score(score):
     print("Similarity score: " + str(score))
 
 
+def process_cmdline_args(args):    
+    text = extract_text_from_file(args.filename)
+    text2 = extract_text_from_file(args.filename2)
+    
+    sims, scores = find_similarities(text, text2)    
+    sims_intervals = merge_similarities(sims)
 
+    BOLD = '\033[1m'
+    ENDC = '\033[0m'
+    print(BOLD + "First File:" + ENDC)
+    display_similarities(sims_intervals[0], text2)
+    
+    print(BOLD + "\nSecond File:" + ENDC)
+    display_similarities(sims_intervals[1], text)
 
-def process_cmdline_args(args):
-    if(args.tests):
-        pytest.main(["-x", "tests/"])
-    else:
-        print(extract_text_from_file(args.filename))
-        #check_similarities
-        #display score if needed
-        pass
-
+    if(args.score):
+        score = compute_score(scores)
+        display_score(score)        
 
 
 def handle_unknown_arg_provided():
     print("Unknown args have been provided", file=sys.stderr)
     display_help_message()
 
-
-
-if __name__ == "__main__":
-    print("")
+if __name__ == "__main__":    
     parser = init_parser()    
     while True:
         astr = input('main.py ')
