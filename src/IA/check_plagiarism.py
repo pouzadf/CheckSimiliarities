@@ -62,10 +62,6 @@ def get_distances(emb_model, tokenizer, doc1, doc2):
 
 def find_similarities(text_1, text_2):
     model = SentenceTransformer("distilbert-base-nli-stsb-mean-tokens")
-    #sequences: resultats de la tokenization
-    #distances: matrices avec une distance de 0 à 1. similarity = 1 - distance
-    # distances à l'index (i, j): distance entre la sequence i et la sequence j
-    # => matrice symetrique 
     sequences, distances = get_distances(model, window_tokenizer, text_1, text_2)
     similarities = []
     score = []    
