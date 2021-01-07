@@ -1,7 +1,8 @@
-sudo docker build -t my_img_name
+CheckSimilarities is a CLI project that highlights similarities between text from two files using Bert Model and AI algorithm.
+It supports pdf, docx, rtf and text extension. However document created from word online won't work with this project.
 
-usage: docker run my_img_name [-h] [-t]
+To start the project you just need to run run.sh. It might be long as we need to download in the docker some IA libs 
+that are heavy. On MacOSx you need to allocate to docker more than 8Go of RAM otherwise it will faill to collect Pytorch.
 
-optional arguments:
-  -h, --help   show this help message and exit
-  -t, --tests  Run the testsuite
+
+To run the tests for the project just run run_test.sh
