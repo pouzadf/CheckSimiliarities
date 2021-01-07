@@ -1,6 +1,12 @@
 # set base image (host OS)
 FROM python:3.8
 
+
+#required for textract
+RUN apt-get update && apt-get install -y \ 
+python-dev libxml2-dev libxslt1-dev antiword unrtf poppler-utils tesseract-ocr \
+flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig
+
 # install dependencies
 RUN python -m pip install pip-tools
 
