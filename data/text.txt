@@ -1,0 +1,11 @@
+Null Island 
+
+Null Island is a name for the area around the point where the prime meridian and the equator cross,  
+
+located in international waters in the Gulf of Guinea (Atlantic Ocean) off the west African coast. 
+
+[1] In the WGS84 datum, this is at zero degrees latitude and longitude (0°N 0°E), and is the location of a buoy.  
+
+The name 'Null Island' serves as both a joke based around the suppositional existence of an island there, and also as  
+
+a name to which coordinates erroneously set to 0,0 are assigned in placenames databases in order to more easily find and fix them. 

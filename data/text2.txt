@@ -1,0 +1,9 @@
+Presentation of Null Island 
+
+It's the name of a location close to the intersection of the prime meridian and the equator.  
+
+It's located in international waters in the Atlantic Ocean of the Gulf of Guinea, off the west African coast.  
+
+It corresponds to the coordinates (0, 0) in the WGS84 datum. At this locztion ther is a buoy. The name is both a joke  
+
+and based on the hypothesis existence of an island at this point. As well, it's link to databases placenames to ease finding them. 
