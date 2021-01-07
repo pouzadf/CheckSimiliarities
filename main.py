@@ -3,6 +3,7 @@ from reader.text_extractor import extract_text_from_file
 import pytest
 import argparse
 import sys
+import textract
 
 def init_parser():
     parser = argparse.ArgumentParser()
@@ -54,10 +55,12 @@ def display_score(score):
     print("Similarity score: " + str(score))
 
 
-def process_cmdline_args(args):    
-    text = extract_text_from_file(args.filename)
-    text2 = extract_text_from_file(args.filename2)
-    if(text == None or text2 == None):
+def process_cmdline_args(args):
+    try:    
+        text = textract.process(args.filename, encoding='ascii').decode("utf-8")         
+        text2 = textract.process(args.filename2, encoding='ascii').decode("utf-8")
+    except Exception as e:
+        print(e, file=sys.stderr)
         return
     
     sims, scores = find_similarities(text, text2)    

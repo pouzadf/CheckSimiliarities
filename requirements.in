@@ -4,3 +4,4 @@ transformers
 spacy
 pytest 
 sentence-transformers
+textract
