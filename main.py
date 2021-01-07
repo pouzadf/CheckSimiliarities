@@ -1,5 +1,4 @@
 from IA.check_plagiarism import find_similarities, merge_similarities
-from reader.text_extractor import extract_text_from_file
 import pytest
 import argparse
 import sys
